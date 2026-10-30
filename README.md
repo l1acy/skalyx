@@ -14,3 +14,6 @@ You need Python 3.12+ and Node.js 22+ (only for building the frontend).
 [Backend Installation](apps/server/README.md)
 
 # Supported sensors
+| Image | Name | Firmware | Guide |
+| ----- | ---- | -------- | ----- |
+| ![](docs/assets/lywsd03mmc.webp) | Xiaomi LYWSD03MMC | BLE | [Setup Guide](docs/sensors/lywsd03mmc.md)
