@@ -1,0 +1,74 @@
+.icon-swap {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 4px;
+  border-radius: 6px;
+  color: currentColor;
+  cursor: pointer;
+  display: inline-grid;
+  place-items: center;
+  transition: background-color 150ms ease;
+}
+
+.icon-swap:hover {
+  background-color: color-mix(in oklab, currentColor 8%, transparent);
+}
+
+.icon-swap__stack {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  transition: transform 150ms ease;
+}
+
+.icon-swap:active .icon-swap__stack {
+  transform: scale(0.9);
+}
+
+.icon-swap__icon {
+  position: absolute;
+  inset: 0;
+  width: 16px;
+  height: 16px;
+  display: grid;
+  place-items: center;
+  transform-origin: center;
+  transition:
+    opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+  pointer-events: none;
+}
+
+.icon-swap__icon > svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.icon-swap__icon.is-visible {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+  transition-delay: 60ms;
+}
+
+.icon-swap__icon.is-hidden {
+  opacity: 0;
+  transform: scale(0.6);
+  filter: blur(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-swap__icon {
+    transition: opacity 200ms linear;
+  }
+  .icon-swap__icon.is-hidden,
+  .icon-swap__icon.is-visible {
+    transform: none;
+    filter: none;
+  }
+}

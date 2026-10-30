@@ -1,0 +1,9 @@
+# Skalyx internal
+assets/builded-frontend/
+storage.sqlite3
+skalyx.toml
+
+# Python
+.venv/
+__pycache__/
+*.pyc
