@@ -13,6 +13,8 @@ import { useState } from "react"
 import { MorphIcon } from "morphicons/react"
 import { useTheme, type Theme } from "./theme-provider"
 import { LogoHouseToggle } from "./logo-toggler"
+import { useTranslation } from "@/i18n/context"
+import { LanguageCombobox } from "./language-combobox"
 
 const ThemeIcons: Record<Theme, IconNode> = {
   dark: Moon,
@@ -48,7 +50,8 @@ function Logo() {
   const [isFocused, setIsFocused] = useState(false)
 
   return (
-    <Button variant={'ghost'}
+    <Button
+      variant={"ghost"}
       className="flex flex-row items-center gap-1.5 px-3"
       onMouseEnter={() => setIsFocused(true)}
       onMouseLeave={() => setIsFocused(false)}
@@ -62,14 +65,25 @@ function Logo() {
 
 export default function Header() {
   const { theme, setTheme } = useTheme()
+  const { t } = useTranslation()
+
   return (
     <header className="flex flex-row px-4 py-4">
-        <Logo/>
-      <HeaderItem label="История" iconDefault={Clock} iconHover={Save} />
-      <HeaderItem label="Настройки" iconDefault={Settings} iconHover={Wrench} />
+      <Logo />
+      <HeaderItem
+        label={t("historyTab")}
+        iconDefault={Clock}
+        iconHover={Save}
+      />
+      <HeaderItem
+        label={t("settingsTab")}
+        iconDefault={Settings}
+        iconHover={Wrench}
+      />
 
       <div className="flex-1"></div>
 
+      <LanguageCombobox/>
       <Button
         size={"icon"}
         onClick={() => setTheme(theme == "dark" ? "light" : "dark")}
