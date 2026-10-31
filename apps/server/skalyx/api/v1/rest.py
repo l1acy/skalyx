@@ -11,7 +11,7 @@ rest_router = APIRouter()
 data_types = {
     'str': str,
     'int': int,
-    'bool': bool,
+    'bool': lambda raw: raw == "True",
     'float': float
 }
 
