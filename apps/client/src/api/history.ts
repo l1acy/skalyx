@@ -1,4 +1,3 @@
-// api/weather.ts
 import { apiFetch } from './client';
 
 interface WeatherRecord {
