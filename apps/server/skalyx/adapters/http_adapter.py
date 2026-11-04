@@ -34,7 +34,7 @@ def make_event(device_id: str, metric: str, value: Any, unit: str | None) -> Eve
 
 class HTTPAdapter:
     def __init__(self) -> None:
-        self.__devices = Config().data.devices
+        self.__devices = [i for i in Config().data.devices if i.parser in HTTP_BASED_PARSERS]
         self.__task: asyncio.Task | None = None
         self.__stop_event = asyncio.Event()
         self.__loop: asyncio.AbstractEventLoop | None = None
