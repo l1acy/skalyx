@@ -14,6 +14,7 @@ class ConfigDevice(BaseModel):
     address: str
     parser: str
     parser_params: BleParserParams | dict
+    ask_interval: float | None = None
 
 
 class SkalyxConfig(BaseModel):
