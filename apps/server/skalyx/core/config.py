@@ -1,8 +1,9 @@
 import tomllib
 from pathlib import Path
+from typing import Annotated, Literal
 
 import tomlkit
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class BleParserParams(BaseModel):
@@ -12,13 +13,23 @@ class BleParserParams(BaseModel):
 class ConfigDevice(BaseModel):
     device_id: str
     address: str
-    parser: str
-    parser_params: BleParserParams | dict
-    ask_interval: float | None = None
+
+
+class BleDevice(ConfigDevice):
+    parser: Literal['bthome_v2']
+    parser_params: BleParserParams
+
+
+class HttpDevice(ConfigDevice):
+    parser: Literal['openweathermap']
+    parser_params: dict
+    ask_interval: float
+
+type ConfigDeviceUnion = Annotated[BleDevice | HttpDevice, Field(discriminator='parser')]
 
 
 class SkalyxConfig(BaseModel):
-    devices: list[ConfigDevice] = []
+    devices: list[ConfigDeviceUnion] = []
 
 
 class Config:
