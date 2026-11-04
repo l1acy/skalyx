@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 
-from skalyx import ble_adapter, bus, storage
+from skalyx import ble_adapter, bus, http_adapter, storage
 from skalyx.api.api import api_router
 from skalyx.api.frontend import frontend_router
 
@@ -15,10 +15,12 @@ from skalyx.api.frontend import frontend_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await ble_adapter.start()
+    await http_adapter.start()
     await storage.start()
     bus_task = asyncio.create_task(bus.run())
     yield
     await ble_adapter.stop()
+    await http_adapter.stop()
     await storage.stop()
     bus.stop()
     bus_task.cancel()
