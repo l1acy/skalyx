@@ -40,7 +40,6 @@ class HTTPAdapter:
         self.__loop: asyncio.AbstractEventLoop | None = None
         self.__running: bool = False
         self.__http_session: aiohttp.ClientSession | None = None
-        self.__devices_ask_time: dict[str, float] = {i.device_id: 0 for i in self.__devices}
 
     async def __poll_once(self, client: aiohttp.ClientSession, device: ConfigDevice):
         if not isinstance(device.parser_params, dict):
@@ -52,8 +51,6 @@ class HTTPAdapter:
         if device.parser not in HTTP_BASED_PARSERS:
             logger.error('HTTP device %s does not support parser %s', device.device_id, device.parser)
             return
-
-        self.__devices_ask_time[device.device_id] = time.monotonic()
 
         try:
             async with client.get(
