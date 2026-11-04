@@ -13,7 +13,7 @@ class ConfigDevice(BaseModel):
     device_id: str
     address: str
     parser: str
-    parser_params: BleParserParams
+    parser_params: BleParserParams | dict
 
 
 class SkalyxConfig(BaseModel):
