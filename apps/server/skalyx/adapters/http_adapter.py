@@ -86,9 +86,9 @@ class HTTPAdapter:
         self.__running = False
         self.__stop_event.set()
 
-        if self.__tasks:
-            await asyncio.gather(*self.__tasks, return_exceptions=True)
-            self.__tasks.clear()
+        for t in self.__tasks:
+            t.cancel()
+        await asyncio.gather(*self.__tasks, return_exceptions=True)
 
         if self.__http_session and not self.__http_session.closed:
             await self.__http_session.close()
