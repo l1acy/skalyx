@@ -22,7 +22,7 @@ type PathImpl<T, K extends keyof T> = K extends string
     : K
   : never;
 
-type TranslationKey = PathImpl<Dictionary, keyof Dictionary>;
+export type TranslationKey = PathImpl<Dictionary, keyof Dictionary>;
 
 type ValueAtPath<T, P extends string> = P extends `${infer Head}.${infer Rest}`
   ? Head extends keyof T

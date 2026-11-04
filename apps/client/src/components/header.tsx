@@ -1,26 +1,17 @@
 import {
   Clock,
-  Monitor,
-  Moon,
   Save,
   Settings,
-  Sun,
   Wrench,
   type IconNode,
 } from "lucide"
 import { Button } from "./ui/button"
 import { useState } from "react"
 import { MorphIcon } from "morphicons/react"
-import { useTheme, type Theme } from "./theme-provider"
 import { LogoHouseToggle } from "./logo-toggler"
 import { useTranslation } from "@/i18n/context"
 import { LanguageCombobox } from "./language-combobox"
-
-const ThemeIcons: Record<Theme, IconNode> = {
-  dark: Moon,
-  light: Sun,
-  system: Monitor,
-}
+import { ThemeSwitcher } from "./theme-switcher"
 
 function HeaderItem({
   label,
@@ -64,7 +55,6 @@ function Logo() {
 }
 
 export default function Header() {
-  const { theme, setTheme } = useTheme()
   const { t } = useTranslation()
 
   return (
@@ -83,14 +73,8 @@ export default function Header() {
 
       <div className="flex-1"></div>
 
-      <LanguageCombobox/>
-      <Button
-        size={"icon"}
-        onClick={() => setTheme(theme == "dark" ? "light" : "dark")}
-        variant={"outline"}
-      >
-        <MorphIcon icon={ThemeIcons[theme]} />
-      </Button>
+      <LanguageCombobox />
+      <ThemeSwitcher/>
     </header>
   )
 }

@@ -4,5 +4,10 @@ export default {
     wip: 'Work in progress',
     languageSelect: {
         notFound: 'No languages found'
-    }
+  },
+  theme: {
+    light: 'Light',
+    dark: 'Dark',
+    system: 'System'
+  }
 };

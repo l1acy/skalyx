@@ -4,5 +4,10 @@ export default {
     wip: 'Работа в процессе',
     languageSelect: {
         notFound: 'Языки не найдены'
-    }
+  },
+  theme: {
+    light: 'Светлая',
+    dark: 'Тёмная',
+    system: 'Системная'
+  }
 };
