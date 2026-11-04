@@ -1,12 +1,35 @@
 import asyncio
 import logging
 import time
+from datetime import UTC, datetime
+from typing import Any
 
 import aiohttp
 
+from skalyx.adapters.parsers.openweathermap import OpenWeatherMapParser
+from skalyx.core.bus import EventBus
 from skalyx.core.config import Config, ConfigDevice
+from skalyx.schemas.event import Event
 
 logger = logging.getLogger('adapters.http')
+bus = EventBus()
+
+PARSER_MAP = {
+    'openweathermap': OpenWeatherMapParser
+}
+HTTP_BASED_PARSERS = {'openweathermap'}
+
+
+def make_event(device_id: str, metric: str, value: Any, unit: str | None) -> Event:
+    return Event(
+        device_id=device_id,
+        source='http',
+        metric=metric,
+        value=value,
+        unit=unit or '',
+        timestamp=datetime.now(UTC).isoformat(),
+        meta={}
+    )
 
 
 class HTTPAdapter:
@@ -26,6 +49,9 @@ class HTTPAdapter:
                 "`parser_params` must be a dictionary", device.device_id,
             )
             return
+        if device.parser not in HTTP_BASED_PARSERS:
+            logger.error('HTTP device %s does not support parser %s', device.device_id, device.parser)
+            return
 
         self.__devices_ask_time[device.device_id] = time.monotonic()
 
@@ -36,9 +62,13 @@ class HTTPAdapter:
             ) as response:
                 response.raise_for_status()
                 body = await response.text()
+                parser = PARSER_MAP[device.parser]
+                metrics = parser.parse(body)
+
+                for m in metrics:
+                    await bus.publish(make_event(device_id=device.device_id, metric=m.metric, unit=m.unit, value=m.value))
 
                 logger.info('%s http device asked with %d status code', device.device_id, response.status)
-                print(body)
 
         except AssertionError:
             logger.error('Invalid HTTP device configuration: `parser_params` must be a dictionary')
